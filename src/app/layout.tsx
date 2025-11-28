@@ -13,6 +13,16 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Virtual Machine - Locação de Equipamentos de TI",
   description: "Locação de equipamentos de TI sob medida para sua empresa",
+  authors: [
+    { name: "Anderson Dias Farias", url: "https://adfdeveloper.com.br" },
+  ],
+  metadataBase: new URL("https://virtualmachine.com.br"),
+  openGraph: {
+    title: "Virtual Machine - Locação de Equipamentos de TI",
+    description: "Locação de equipamentos de TI sob medida para sua empresa",
+    url: "https://virtualmachine.com.br",
+    siteName: "Virtual Machine",
+  },
 };
 
 export default function RootLayout({
