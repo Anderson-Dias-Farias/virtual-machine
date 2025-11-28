@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface CountUpProps {
   end: number;
@@ -21,31 +21,7 @@ export function CountUp({
   const [hasAnimated, setHasAnimated] = useState(false);
   const elementRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasAnimated) {
-            setHasAnimated(true);
-            animate();
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    if (elementRef.current) {
-      observer.observe(elementRef.current);
-    }
-
-    return () => {
-      if (elementRef.current) {
-        observer.unobserve(elementRef.current);
-      }
-    };
-  }, [hasAnimated]);
-
-  const animate = () => {
+  const animate = useCallback(() => {
     const startTime = Date.now();
     const startValue = 0;
 
@@ -68,7 +44,30 @@ export function CountUp({
     };
 
     requestAnimationFrame(updateCount);
-  };
+  }, [end, duration]);
+
+  useEffect(() => {
+    const currentElement = elementRef.current;
+    if (!currentElement) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasAnimated) {
+            setHasAnimated(true);
+            animate();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(currentElement);
+
+    return () => {
+      observer.unobserve(currentElement);
+    };
+  }, [hasAnimated, animate]);
 
   return (
     <div ref={elementRef} className={className}>
