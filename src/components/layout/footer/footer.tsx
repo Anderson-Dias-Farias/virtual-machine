@@ -10,7 +10,7 @@ const footerLinks = {
     { label: "Apple", href: "/apple" },
   ],
   empresa: [
-    { label: "Sobre Nós", href: "#" },
+    { label: "Sobre Nós", href: "/quem-somos" },
     { label: "Contato", href: "/contato" },
     { label: "Política de Privacidade", href: "/politica-de-privacidade" },
   ],

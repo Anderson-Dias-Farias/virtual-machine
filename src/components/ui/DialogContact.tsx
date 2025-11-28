@@ -10,7 +10,7 @@ export function DialogContact({ trigger }: DialogContactProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="p-0 mx-auto max-h-[80vh] overflow-y-auto">
+      <DialogContent className="p-0 mx-auto max-h-[90vh] overflow-y-auto min-w-[80vw]">
         <ContactForm />
       </DialogContent>
     </Dialog>

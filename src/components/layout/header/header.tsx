@@ -38,7 +38,7 @@ export function Header() {
   return (
     <header
       ref={headerRef}
-      className="w-full bg-[var(--azul)] border-b border-[var(--azul)] relative z-50"
+      className="w-full bg-[var(--azul)] border-b border-[var(--azul)] relative z-50 sticky top-0"
     >
       <div className="w-full max-w-screen-xl mx-auto px-4">
         <div className="flex items-center justify-between h-22 gap-4">

@@ -3,6 +3,7 @@ import { ContactForm } from "@/components/sections/contact-form/contact-form";
 import { ProductsCarousel } from "@/components/sections/products-carousel/products-carousel";
 import { WhyRent } from "@/components/sections/why-rent/why-rent";
 import { Button } from "@/components/ui/button";
+import { DialogContact } from "@/components/ui/DialogContact";
 import { whyRentItems } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
@@ -70,10 +71,14 @@ export default function TabletsPage() {
                   </p>
                 </div>
 
-                <Button className="bg-gradient-to-r from-[var(--azul)] to-[var(--azul-dark)] text-white rounded-full px-5 md:py-[10px] text-[12px] md:text-sm font-bold uppercase hover:opacity-90 transition-opacity w-full max-w-[400px] md:h-[60px] flex items-center justify-center gap-5">
-                  conheça nossos modelos e aplicações
-                  <ArrowRight className="h-5 w-5 md:h-[27.61px] md:w-[30.02px]" />
-                </Button>
+                <DialogContact
+                  trigger={
+                    <Button className="bg-gradient-to-r from-[var(--azul)] to-[var(--azul-dark)] text-white rounded-full px-5 md:py-[10px] text-[12px] md:text-sm font-bold uppercase hover:opacity-90 transition-opacity w-full max-w-[400px] md:h-[60px] flex items-center justify-center gap-5">
+                      conheça nossos modelos e aplicações
+                      <ArrowRight className="h-5 w-5 md:h-[27.61px] md:w-[30.02px]" />
+                    </Button>
+                  }
+                />
               </div>
             </div>
             {/* Image */}
