@@ -23,6 +23,10 @@ export async function POST(request: NextRequest) {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
+      tls: {
+        // Ignorar verificação de certificado SSL (necessário quando o certificado não corresponde ao hostname)
+        rejectUnauthorized: false,
+      },
     });
 
     // Conteúdo do email
