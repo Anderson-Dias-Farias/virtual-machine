@@ -37,9 +37,9 @@ export function Footer() {
             </p>
           </div>
 
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 w-full">
+          <div className="flex flex-wrap gap-4 w-full justify-between">
             {/* Empresa */}
-            <div>
+            <div className="w-full lg:w-auto max-w-[200px]">
               <h4 className="font-semibold mb-4 md:mb-6 text-white text-sm md:text-base">
                 Empresa
               </h4>
@@ -57,7 +57,7 @@ export function Footer() {
               </ul>
             </div>
             {/* Soluções */}
-            <div>
+            <div className="w-full lg:w-auto max-w-[200px]">
               <h4 className="font-semibold mb-4 md:mb-6 text-white text-sm md:text-base">
                 Soluções
               </h4>
@@ -76,7 +76,7 @@ export function Footer() {
             </div>
 
             {/* Contato */}
-            <div className="w-full lg:w-auto max-w-[300px]">
+            <div className="w-full lg:w-auto max-w-[230px]">
               <h4 className="font-semibold mb-4 md:mb-6 text-white text-sm md:text-base">
                 Contato
               </h4>
@@ -100,6 +100,22 @@ export function Footer() {
                 <li>Rua Dom Valverde, 32</li>
                 <li>Ipiranga – São Paulo – SP</li>
               </ul>
+            </div>
+            <div className="flex flex-col gap-2">
+              <Image
+                src="/images/unnamed (1).webp"
+                alt="Virtual Machine"
+                width={200}
+                height={200}
+                className="w-full object-cover max-w-[150px] max-h-[150px]"
+              />
+              <Image
+                src="/images/unnamed (2).webp"
+                alt="Virtual Machine"
+                width={200}
+                height={200}
+                className="w-full object-cover max-w-[150px] max-h-[150px]"
+              />
             </div>
           </div>
         </div>
