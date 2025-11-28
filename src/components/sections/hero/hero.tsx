@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden w-full min-h-[520px] bg-white  border-b border-b-22 border-b-[var(--azul)]">
+    <section className="relative overflow-hidden  w-full min-h-[520px] bg-white  border-b border-b-22 border-b-[var(--azul)]">
       <div className="w-full pt-5">
         <div className="container mx-auto  py-20 relative z-10 overflow-visible">
           <div className="flex flex-col md:flex-row gap-12 items-center overflow-visible ">
@@ -47,7 +47,7 @@ export function Hero() {
                 />
               </div>
               {/* Container para imagens lado a lado - mais largo que o pai */}
-              <div className="absolute z-20 flex items-end left-1/2 -translate-x-1/2 w-[140%] h-full overflow-hidden">
+              <div className="absolute z-20 flex items-end left-1/2 -translate-x-1/2 w-[140%] h-full overflow-hidden xl:overflow-visible">
                 {/* Imagem 2 - Lado esquerdo */}
                 <div className="relative bottom-0 w-full  h-full translate-x-1/4 translate-y-1/6">
                   <Image
@@ -59,7 +59,7 @@ export function Hero() {
                   />
                 </div>
                 {/* Imagem 3 - Lado direito */}
-                <div className="relative bottom-0 w-full  h-full -translate-x-1/28 translate-y-1/6 xl:translate-x-1/8 xl:translate-y-1/4">
+                <div className="relative bottom-0 w-full  h-full -translate-x-1/28 translate-y-1/6 xl:translate-x-1/3 xl:translate-y-1/4">
                   <Image
                     src="/images/hero-image-3.png"
                     alt="Soluções de TI"
