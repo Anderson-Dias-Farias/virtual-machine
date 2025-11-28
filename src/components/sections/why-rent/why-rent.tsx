@@ -2,7 +2,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
@@ -21,17 +20,17 @@ export function WhyRent({ title, items }: WhyRentProps) {
     <section className="w-full bg-[var(--azul)] py-16 md:py-24">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-[32px] font-semibold text-white mb-[60px] text-center leading-[1.5em]">
+          <h2 className="text-2xl md:text-3xl font-semibold text-white mb-[60px] text-center leading-[1.5em]">
             {title}
           </h2>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 justify-center">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-center0 w-full">
             {items.map((item, index) => (
               <Card
                 key={index}
-                className="bg-[var(--cinza)] border border-[var(--azul)] rounded-[20px] p-5 w-full max-w-[305px] mx-auto hover:shadow-xl transition-shadow"
+                className="bg-[var(--cinza)] border border-[var(--azul)] rounded-[20px] p-5 w-full lg:max-w-[305px] mx-auto hover:shadow-xl transition-shadow"
               >
-                <CardHeader className="p-0">
+                <div className="p-0 flex sm:flex-col items-center justify-start sm:items-start gap-5 sm:gap-0 w-full">
                   {item.icon && (
                     <div className="mb-5">
                       <Image
@@ -43,12 +42,12 @@ export function WhyRent({ title, items }: WhyRentProps) {
                       />
                     </div>
                   )}
-                  <CardTitle className="text-[var(--preto)] text-[20px] font-semibold leading-[1.5em] mb-5">
+                  <CardTitle className="  text-[var(--preto)] text-sm md:text-lg font-semibold leading-[1.5em] mb-5">
                     {item.title}
                   </CardTitle>
-                </CardHeader>
+                </div>
                 <CardContent className="p-0">
-                  <CardDescription className="text-[var(--preto)] text-[18px] font-normal leading-[1.5em]">
+                  <CardDescription className="text-[var(--preto)] text-sm md:text-base font-normal leading-[1.5em]">
                     {item.description}
                   </CardDescription>
                 </CardContent>

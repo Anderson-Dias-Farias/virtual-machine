@@ -1,7 +1,5 @@
-import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 interface Product {
   id: string;
@@ -20,29 +18,16 @@ export function ProductsCarousel({ title, products }: ProductsCarouselProps) {
     <section className="w-full bg-white py-16 md:py-24">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-12">
-            <h2 className="text-[32px] font-semibold text-[var(--preto)] leading-[1.5em]">
-              {title}
+          <div className="flex items-center justify-center mb-14">
+            <h2 className="text-xl md:text-3xl mb-2 font-semibold text-[var(--preto)] leading-[1.5em] text-center">
+              {title.split(" ")[0]}{" "}
+              <span className="text-[var(--azul)]">
+                {title.split(" ")[1]} {title.split(" ")[2]}
+              </span>
             </h2>
-            <div className="flex gap-4">
-              <Button
-                variant="outline"
-                size="icon"
-                className="rounded-full border-[var(--azul)] text-[var(--azul)] bg-transparent"
-              >
-                <ChevronLeft className="h-5 w-5" />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                className="rounded-full border-[var(--azul)] text-[var(--azul)] bg-transparent"
-              >
-                <ChevronRight className="h-5 w-5" />
-              </Button>
-            </div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-6">
             {products.map((product) => (
               <Card
                 key={product.id}
@@ -54,7 +39,7 @@ export function ProductsCarousel({ title, products }: ProductsCarouselProps) {
                       src={product.image}
                       alt={product.name}
                       fill
-                      className="object-cover"
+                      className="object-contain"
                       sizes="(max-width: 768px) 100vw, 33vw"
                     />
                   </div>
@@ -67,7 +52,7 @@ export function ProductsCarousel({ title, products }: ProductsCarouselProps) {
                     {product.specs.map((spec, index) => (
                       <li
                         key={index}
-                        className="text-[16px] font-light text-[rgba(23,11,6,0.6)] uppercase leading-[1.5em]"
+                        className="text-[16px] font-light text-[rgba(23,11,6,0.6)] capitalize leading-[1.5em]"
                       >
                         {spec}
                       </li>
@@ -82,4 +67,3 @@ export function ProductsCarousel({ title, products }: ProductsCarouselProps) {
     </section>
   );
 }
-

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { DialogContact } from "@/components/ui/DialogContact";
 import { ArrowRight } from "lucide-react";
 
 const comparisonData = {
@@ -7,18 +8,21 @@ const comparisonData = {
     "Fluxo de Caixa",
     "Tecnologia",
     "Manutenção e Suporte",
+    "Flexibilidade",
   ],
   comprar: [
     "Alto investimento de capital",
     "Desembolso único que pode comprometer o capital de giro",
     "Risco de obsolescência rápida e necessidade de novas compras",
     "Responsabilidade e custos da empresa",
+    "Dificuldade para escalar ou desativar equipamentos",
   ],
   locacao: [
     "Baixo ou inexistente",
     "Previsível, com pagamentos mensais fixos",
     "Sempre atualizada, com acesso aos modelos mais recentes",
     "Inclusos no contrato, sem custos adicionais",
+    "Adaptação rápida a mudanças de demanda",
   ],
 };
 
@@ -44,7 +48,7 @@ export function Comparison() {
           <div className="flex flex-col md:flex-row justify-center gap-5">
             {/* Characteristics Table */}
             <div className="w-full md:w-[300px] rounded-[10px] overflow-hidden shadow-[0px_10px_40px_0px_rgba(0,0,0,0.1)] bg-white flex flex-col">
-              <div className="bg-[var(--azul)] text-white font-semibold text-center py-4">
+              <div className="bg-[var(--azul)] text-white font-semibold text-start p-4">
                 Característica
               </div>
               <div className="flex flex-col">
@@ -53,8 +57,8 @@ export function Comparison() {
                     key={char}
                     className={
                       index % 2 === 0
-                        ? "bg-white text-[var(--preto)] py-4 px-4 font-medium h-[100px] flex items-start"
-                        : "bg-[var(--azul)] text-white py-4 px-4 font-medium h-[100px] flex items-start"
+                        ? "bg-white text-[var(--preto)] py-4 px-4  h-[70px] flex items-center justify-start w-full"
+                        : "bg-[var(--azul)] text-white py-4 px-4 h-[70px] flex items-center justify-start w-full"
                     }
                   >
                     {char}
@@ -64,8 +68,8 @@ export function Comparison() {
             </div>
 
             {/* Comprar Table */}
-            <div className="w-full md:w-[300px] rounded-[10px] overflow-hidden shadow-[0px_10px_40px_0px_rgba(0,0,0,0.1)] bg-white flex flex-col">
-              <div className="bg-[#dc2626] text-white font-semibold text-center py-4">
+            <div className="w-full md:w-[350px] rounded-[10px] overflow-hidden shadow-[0px_10px_40px_0px_rgba(0,0,0,0.1)] bg-white flex flex-col">
+              <div className="bg-[#dc2626] text-white font-semibold text-start p-4">
                 Comprar Equipamentos
               </div>
               <div className="flex flex-col">
@@ -74,8 +78,8 @@ export function Comparison() {
                     key={index}
                     className={
                       index % 2 === 0
-                        ? "bg-white text-[var(--preto)] py-4 px-4 text-sm h-[100px] flex items-start"
-                        : "bg-[#fee2e2] text-[var(--preto)] py-4 px-4 text-sm h-[100px] flex items-start"
+                        ? "bg-white text-[var(--preto)] py-4 px-4 text-sm h-[70px] flex items-center justify-start w-full"
+                        : "bg-[#fee2e2] text-[#dc2626] py-4 px-4 text-sm h-[70px] flex items-center justify-start w-full"
                     }
                   >
                     {item}
@@ -85,18 +89,18 @@ export function Comparison() {
             </div>
 
             {/* Locação Table */}
-            <div className="w-full md:w-[300px] rounded-[10px] overflow-hidden shadow-[0px_10px_40px_0px_rgba(0,0,0,0.1)] bg-white flex flex-col">
-              <div className="bg-[#16a34a] text-white font-semibold text-center py-4">
+            <div className="w-full md:w-[350px] rounded-[10px] overflow-hidden shadow-[0px_10px_40px_0px_rgba(0,0,0,0.1)] bg-white flex flex-col">
+              <div className="bg-[#16a34a] text-white font-semibold text-start p-4">
                 Locação de Equipamentos
               </div>
-              <div className="flex flex-col">
+              <div className="flex flex-col items-start justify-center w-full">
                 {comparisonData.locacao.map((item, index) => (
                   <div
                     key={index}
                     className={
                       index % 2 === 0
-                        ? "bg-white text-[var(--preto)] py-4 px-4 text-sm h-[100px] flex items-start"
-                        : "bg-[#dcfce7] text-[var(--preto)] py-4 px-4 text-sm h-[100px] flex items-start"
+                        ? "bg-white text-[var(--preto)] py-4 px-4 text-sm h-[70px] flex items-center justify-start w-full"
+                        : "bg-[#dcfce7] text-[#16a34a] py-4 px-4 text-sm h-[70px] flex items-center justify-start w-full"
                     }
                   >
                     {item}
@@ -108,10 +112,14 @@ export function Comparison() {
 
           {/* CTA */}
           <div className="flex justify-center pt-8">
-            <Button className="bg-gradient-to-r from-[var(--azul)] to-[var(--azul-dark)] text-white rounded-full px-8 py-6 text-base font-medium hover:opacity-90 transition-opacity w-full md:w-auto">
-              Preserve seu capital e invista no core do seu negócio
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <DialogContact
+              trigger={
+                <Button className="bg-gradient-to-r from-[var(--azul)] to-[var(--azul-dark)] max-w-[450px] text-white rounded-full px-8 py-6 text-[12px] md:text-sm font-medium hover:opacity-90 transition-opacity w-full md:w-auto">
+                  Preserve seu capital e invista no core do seu negócio
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              }
+            />
           </div>
         </div>
       </div>

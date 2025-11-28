@@ -3,59 +3,41 @@ import { ContactForm } from "@/components/sections/contact-form/contact-form";
 import { ProductHero } from "@/components/sections/product-hero/product-hero";
 import { ProductsCarousel } from "@/components/sections/products-carousel/products-carousel";
 import { WhyRent } from "@/components/sections/why-rent/why-rent";
-
-const whyRentItems = [
-  {
-    title: "Tecnologia Atualizada",
-    description: "Sempre com os modelos mais recentes",
-  },
-  {
-    title: "Suporte Técnico",
-    description: "Equipe especializada à disposição",
-  },
-  {
-    title: "Flexibilidade",
-    description: "Aumente ou diminua conforme demanda",
-  },
-  {
-    title: "Redução de Custos",
-    description: "Elimine gastos com manutenção",
-  },
-];
+import { whyRentItems } from "@/lib/utils";
 
 const applications = [
   {
-    title: "Design e Criatividade",
+    title: "Vendas e Atendimento",
+    icon: "/images/icons/cliente 1.png",
     description:
-      "MacBooks e iMacs ideais para design gráfico, edição de vídeo e criação de conteúdo profissional.",
+      "Apresentações premium e catálogos digitais com iPad e MacBook. Integração total com iPhone e CRM para atendimento ágil.",
   },
   {
-    title: "Inovação e Qualidade",
+    title: "Eventos e Feiras",
+    icon: "/images/icons/Layer_1.png",
     description:
-      "Tecnologia Apple para equipes que buscam excelência em design, performance e experiência do usuário.",
+      "Credenciamento e pesquisas com iPad e iPhone.Desempenho confiável e câmeras de alta qualidade para registro.",
   },
   {
-    title: "Segurança Corporativa",
+    title: "Treinamentos",
+    icon: "/images/icons/Vector.png",
     description:
-      "Ambiente seguro e confiável para dados corporativos sensíveis e aplicações críticas.",
+      "iPad com Apple Pencil e apps didáticos interativos. MacBook ideal para aulas online e edição de conteúdo.",
   },
   {
-    title: "Performance Premium",
+    title: "Logística e Campo",
+    icon: "/images/icons/local (1) 1.png",
     description:
-      "Chips M-series para máxima performance e eficiência energética em todas as tarefas.",
+      "iPhone e iPad com GPS e coleta de dados em tempo real. Sincronização segura via iCloud e longa autonomia.",
   },
 ];
 
 const products = [
   {
     id: "1",
-    name: "MacBook Pro",
-    specs: ["Chip M3", "16GB+ RAM", "SSD 512GB+"],
-  },
-  {
-    id: "2",
-    name: "iMac",
-    specs: ["Chip M3", "24 polegadas", "8GB+ RAM"],
+    name: "MacBook Pro 14 M4",
+    image: "/images/5fdab2a0d334cb4406335d8a8b0dcbe87f130cfc.png",
+    specs: ["SSD512GB", "Apple Chip M4", "16GB+ RAM"],
   },
 ];
 

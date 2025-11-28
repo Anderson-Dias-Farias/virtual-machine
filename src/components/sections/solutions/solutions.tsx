@@ -27,12 +27,12 @@ export function Solutions() {
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-[1560px] mx-auto w-full">
           <div className="bg-white rounded-[40px] px-6 py-10 md:px-10 md:py-14 shadow-[0px_0px_40px_0px_rgba(0,0,0,0.01)] w-full">
-            <h2 className="text-[32px] font-semibold text-[var(--preto)] leading-tight text-left mb-6 md:max-w-[500px]">
+            <h2 className="text-2xl md:text-3xl font-semibold text-[var(--preto)] leading-tight md:text-left text-center mb-6 md:max-w-[500px]">
               <span className="text-[var(--azul)]">Soluções de TI</span> Sob
               Medida para Cada Necessidade
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-[21px]">
+            <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-[21px]">
               {solutions.map((solution, index) => (
                 <div
                   key={index}

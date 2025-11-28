@@ -4,7 +4,6 @@ import {
   CardDescription,
   CardTitle,
 } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 interface ApplicationsProps {
@@ -15,14 +14,12 @@ interface ApplicationsProps {
     title: string;
     description: string;
   }[];
-  bannerClassName?: string;
 }
 
 export function Applications({
   bannerSrc,
   title,
   applications,
-  bannerClassName,
 }: ApplicationsProps) {
   return (
     <section className="w-full py-[60px] relative">
@@ -36,10 +33,7 @@ export function Applications({
                 alt={title}
                 width={1000}
                 height={1000}
-                className={cn(
-                  "object-cover w-full h-full rounded-[16px] max-w-[96%] max-h-[380px] mx-auto",
-                  bannerClassName
-                )}
+                className="object-cover w-full h-full rounded-[16px] max-w-[96%] max-h-[380px] mx-auto"
               />
             )}
 
@@ -49,26 +43,26 @@ export function Applications({
                 {title}
               </h2>
 
-              <div className="grid md:grid-cols-2  gap-[21px] justify-center">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4  gap-[21px] justify-center">
                 {applications.map((app, index) => {
                   return (
                     <Card
                       key={index}
                       className="bg-[var(--cinza)] border-[var(--cinza)] rounded-[20px] p-5 w-full  mx-auto hover:shadow-xl transition-shadow"
                     >
-                      <div className="p-0 flex md:flex-col items-center justify-start sm:items-start gap-5 sm:gap-0 w-full mb-4 md:mb-0">
+                      <div className="p-0 flex sm:flex-col items-center justify-start sm:items-start gap-5 sm:gap-0">
                         {app.icon && (
-                          <div className="md:mb-5 mb-0">
+                          <div className="mb-5">
                             <Image
                               src={app.icon}
                               alt={app.title}
                               width={24}
                               height={24}
-                              className="w-[44px] h-[44px] rounded-full bg-[var(--azul)] p-2 object-contain"
+                              className="w-[44px] h-[44px] rounded-full bg-[var(--azul)] p-2 object-cover"
                             />
                           </div>
                         )}
-                        <CardTitle className="text-[var(--preto)] text-sm md:text-lg font-semibold leading-[1.5em] md:mb-5 mb-0  ">
+                        <CardTitle className="text-[var(--preto)] text-sm md:text-lg font-semibold leading-[1.5em] mb-5">
                           {app.title}
                         </CardTitle>
                       </div>

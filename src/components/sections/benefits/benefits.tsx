@@ -31,7 +31,7 @@ export function Benefits() {
     <section className="w-full py-8 md:py-10 relative">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-xl md:text-3xl font-semibold text-[var(--preto)] mb-6 md:mb-12 text-left leading-[1.5em]">
+          <h2 className="text-xl md:text-3xl font-semibold text-[var(--preto)] mb-6 md:mb-12 md:text-left text-center leading-[1.5em]">
             <span className="text-[var(--azul)]">Principais Vantagens</span> da{" "}
             <br />
             Locação de Equipamentos de TI
@@ -54,13 +54,13 @@ export function Benefits() {
                       className="border-none"
                     >
                       <AccordionTrigger className="hover:no-underline py-5 text-[#F5F5F7]">
-                        <h3 className="text-[22px] font-semibold text-[#F5F5F7] leading-[1.5em] text-left">
+                        <h3 className="text-lg md:text-xl font-semibold text-[#F5F5F7] leading-[1.5em] text-left">
                           {benefit.title}
                         </h3>
                       </AccordionTrigger>
                       <AccordionContent className="pt-0 pb-5">
                         <div className="flex flex-col gap-5">
-                          <p className="text-[18px] font-normal text-[#F5F5F7] leading-[1.5em]">
+                          <p className="text-sm md:text-base font-normal text-[#F5F5F7] leading-[1.5em]">
                             {benefit.description}
                           </p>
                           {index < benefits.length - 1 && (

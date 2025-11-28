@@ -2,20 +2,23 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 export function ContactForm() {
   return (
     <section className="w-full bg-[#FBFBFB] py-16 md:py-24 border-t-2 border-[var(--azul)]">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-start">
+          <div className="flex flex-col md:flex-row gap-12 items-center">
             {/* Text Content */}
             <div className="space-y-5">
-              <h2 className="text-[30px] font-semibold text-[var(--preto)] leading-[1.5em]">
-                Tecnologia sem complicação para sua empresa crescer.
+              <h2 className="text-xl md:text-3xl font-semibold text-[var(--preto)] leading-[1.5em]">
+                <span className="text-[var(--azul)]">
+                  Tecnologia sem complicação
+                </span>{" "}
+                <br />
+                para sua empresa crescer.
               </h2>
-              <p className="text-[20px] font-normal text-[var(--preto)] leading-[1.5em]">
+              <p className="text-sm md:text-lg font-normal text-[var(--preto)] leading-[1.5em] md:max-w-[400px]">
                 Com a Virtual Machine, você reduz custos, aumenta a eficiência e
                 libera sua equipe para o que realmente importa.
               </p>
@@ -95,4 +98,3 @@ export function ContactForm() {
     </section>
   );
 }
-

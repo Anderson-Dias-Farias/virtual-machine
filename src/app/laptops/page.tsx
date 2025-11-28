@@ -29,25 +29,25 @@ const whyRentItems = [
 
 const applications = [
   {
-    icon: "/images/icons/icon-trabalho-produtividade.svg",
+    icon: "/images/icons/Processing.png",
     title: "Trabalho e Produtividade",
     description:
       "Maximize sua performance com ferramentas completas para planilhas, apresentações e colaboração em equipe — tudo com agilidade e precisão.",
   },
   {
-    icon: "/images/icons/icon-design-criacao.svg",
+    icon: "/images/icons/Group (1).png",
     title: "Design e Criação",
     description:
       "Dê vida às suas ideias! Laptops oferecem potência e flexibilidade para edição de imagens, vídeos e projetos de alto desempenho.",
   },
   {
-    icon: "/images/icons/icon-educacao-pesquisa.svg",
+    icon: "/images/icons/_x36_5.png",
     title: "Educação e Pesquisa",
     description:
       "Estude, crie e compartilhe conhecimento com plataformas interativas e recursos ideais para aprendizado remoto ou presencial.",
   },
   {
-    icon: "/images/icons/icon-gestao-empresarial.svg",
+    icon: "/images/icons/Vector (1).png",
     title: "Gestão Empresarial",
     description:
       "Mantenha o controle total do seu negócio com sistemas de gestão, relatórios em tempo real e análises estratégicas na tela do seu notebook.",

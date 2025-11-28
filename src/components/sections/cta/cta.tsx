@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { DialogContact } from "@/components/ui/DialogContact";
 import { ArrowRight } from "lucide-react";
 
 export function CTA() {
@@ -10,13 +11,14 @@ export function CTA() {
             Solicite agora uma proposta personalizada para modernizar seu
             negócio!
           </h2>
-          <Button
-            variant="outline"
-            className="bg-white text-[var(--azul)] border-white font-bold rounded-full px-8 py-6 text-base  hover:bg-gray-50 w-full md:w-auto"
-          >
-            Falar com Especialista
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
+          <DialogContact
+            trigger={
+              <Button className="bg-white text-[var(--azul)] border-white font-bold rounded-full px-8 py-6 md:text-base text-sm  hover:bg-gray-50 w-full md:w-auto">
+                Falar com Especialista
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            }
+          />
         </div>
       </div>
     </section>
