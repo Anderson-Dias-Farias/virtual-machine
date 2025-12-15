@@ -2,34 +2,41 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { IMaskInput } from "react-imask";
+import { z } from "zod";
+
+const contactFormSchema = z.object({
+  nome: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
+  email: z.string().email("E-mail inválido"),
+  telefone: z.string().min(14, "Telefone inválido"),
+  cnpj: z.string().optional(),
+  funcionarios: z.string().optional(),
+  empresa: z.string().optional(),
+});
+
+type ContactFormData = z.infer<typeof contactFormSchema>;
 
 export function ContactForm() {
-  const [formData, setFormData] = useState({
-    nome: "",
-    email: "",
-    telefone: "",
-    cnpj: "",
-    funcionarios: "",
-    empresa: "",
-  });
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState<{
     type: "success" | "error" | null;
     text: string;
   }>({ type: null, text: "" });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
-    // Limpar mensagem ao começar a digitar
-    if (message.type) {
-      setMessage({ type: null, text: "" });
-    }
-  };
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+    reset,
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactFormSchema),
+  });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = async (data: ContactFormData) => {
     setIsLoading(true);
     setMessage({ type: null, text: "" });
 
@@ -39,29 +46,22 @@ export function ContactForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(data),
       });
 
-      const data = await response.json();
+      const responseData = await response.json();
 
       if (response.ok) {
         setMessage({
           type: "success",
           text: "Orçamento solicitado com sucesso! Entraremos em contato em breve.",
         });
-        // Limpar formulário
-        setFormData({
-          nome: "",
-          email: "",
-          telefone: "",
-          cnpj: "",
-          funcionarios: "",
-          empresa: "",
-        });
+        reset();
       } else {
         setMessage({
           type: "error",
-          text: data.error || "Erro ao enviar formulário. Tente novamente.",
+          text:
+            responseData.error || "Erro ao enviar formulário. Tente novamente.",
         });
       }
     } catch {
@@ -96,53 +96,89 @@ export function ContactForm() {
 
             {/* Form */}
             <div className="bg-white rounded-[20px] p-[29px] shadow-[0px_0px_20px_0px_rgba(0,0,0,0.05)] w-full lg:max-w-[50%]">
-              <form className="space-y-[40px]" onSubmit={handleSubmit}>
+              <form
+                className="space-y-[40px]"
+                onSubmit={handleSubmit(onSubmit)}
+              >
                 <div className="grid md:grid-cols-2 md:gap-[40px] gap-4">
                   <div className="space-y-2">
                     <Input
                       id="nome"
                       type="text"
                       placeholder="Nome"
-                      value={formData.nome}
-                      onChange={handleChange}
-                      required
+                      {...register("nome")}
                       className="bg-[var(--cinza)] border-[var(--cinza)] rounded-[4px] h-[40px] md:h-[50px] px-[10px] text-[14px] font-normal text-[var(--preto)]"
                     />
+                    {errors.nome && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.nome.message}
+                      </p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <Input
                       id="email"
                       type="email"
                       placeholder="E-mail"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
+                      {...register("email")}
                       className="bg-[var(--cinza)] border-[var(--cinza)] rounded-[4px] h-[40px] md:h-[50px] px-[10px] text-[14px] font-normal text-[var(--preto)]"
                     />
+                    {errors.email && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.email.message}
+                      </p>
+                    )}
                   </div>
                 </div>
 
                 <div className="grid md:grid-cols-2 md:gap-[40px] gap-4">
                   <div className="space-y-2">
-                    <Input
-                      id="telefone"
-                      type="tel"
-                      placeholder="Telefone"
-                      value={formData.telefone}
-                      onChange={handleChange}
-                      required
-                      className="bg-[var(--cinza)] border-[var(--cinza)] rounded-[4px] h-[40px] md:h-[50px] px-[10px] text-[14px] font-normal text-[var(--preto)]"
+                    <Controller
+                      name="telefone"
+                      control={control}
+                      render={({ field }) => (
+                        <IMaskInput
+                          mask="(00) 00000-0000"
+                          value={field.value || ""}
+                          onAccept={(value) => field.onChange(value)}
+                          onBlur={field.onBlur}
+                          inputRef={field.ref}
+                          id="telefone"
+                          type="tel"
+                          placeholder="Telefone"
+                          className="flex h-[40px] md:h-[50px] w-full rounded-[4px] border border-[var(--cinza)] bg-[var(--cinza)] px-[10px] text-[14px] font-normal text-[var(--preto)] ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        />
+                      )}
                     />
+                    {errors.telefone && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.telefone.message}
+                      </p>
+                    )}
                   </div>
                   <div className="space-y-2">
-                    <Input
-                      id="cnpj"
-                      type="text"
-                      placeholder="CNPJ"
-                      value={formData.cnpj}
-                      onChange={handleChange}
-                      className="bg-[var(--cinza)] border-[var(--cinza)] rounded-[4px] h-[40px] md:h-[50px] px-[10px] text-[14px] font-normal text-[var(--preto)]"
+                    <Controller
+                      name="cnpj"
+                      control={control}
+                      render={({ field }) => (
+                        <IMaskInput
+                          mask="00.000.000/0000-00"
+                          value={field.value || ""}
+                          onAccept={(value) => field.onChange(value)}
+                          onBlur={field.onBlur}
+                          inputRef={field.ref}
+                          id="cnpj"
+                          type="text"
+                          placeholder="CNPJ"
+                          className="flex h-[40px] md:h-[50px] w-full rounded-[4px] border border-[var(--cinza)] bg-[var(--cinza)] px-[10px] text-[14px] font-normal text-[var(--preto)] ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        />
+                      )}
                     />
+                    {errors.cnpj && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.cnpj.message}
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -152,8 +188,7 @@ export function ContactForm() {
                       id="funcionarios"
                       type="text"
                       placeholder="Quantidade de funcionários"
-                      value={formData.funcionarios}
-                      onChange={handleChange}
+                      {...register("funcionarios")}
                       className="bg-[var(--cinza)] border-[var(--cinza)] rounded-[4px] h-[40px] md:h-[50px] px-[10px] text-[14px] font-normal text-[var(--preto)]"
                     />
                   </div>
@@ -162,8 +197,7 @@ export function ContactForm() {
                       id="empresa"
                       type="text"
                       placeholder="Nome da empresa"
-                      value={formData.empresa}
-                      onChange={handleChange}
+                      {...register("empresa")}
                       className="bg-[var(--cinza)] border-[var(--cinza)] rounded-[4px] h-[40px] md:h-[50px] px-[10px] text-[14px] font-normal text-[var(--preto)]"
                     />
                   </div>
