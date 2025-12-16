@@ -55,6 +55,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
+        {/* DPO Easy Banner */}
+        <div id="dpoeasy-banner" />
+        <Script
+          id="dpoeasy-banner-script"
+          strategy="afterInteractive"
+          src="https://cdn.cookies.dponet.com.br?bannerToken=386392b6b47d17b5632dffbdd709911b"
+        />
         <Header />
         <div>{children}</div>
         <Footer />

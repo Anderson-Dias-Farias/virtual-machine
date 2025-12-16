@@ -109,13 +109,15 @@ export function Footer() {
                 height={200}
                 className="w-full object-cover max-w-[150px] max-h-[150px]"
               />
-              <Image
-                src="/images/unnamed (2).webp"
-                alt="Virtual Machine"
-                width={200}
-                height={200}
-                className="w-full object-cover max-w-[150px] max-h-[150px]"
-              />
+              <Link href="https://www.privacidade.com.br/portal-de-privacidade?token=5f9ea0c37bc2bdc0186eba129d78bc21">
+                <Image
+                  src="https://api.dponet.com.br/selo_portal_de_privacidade.png"
+                  alt="Virtual Machine"
+                  width={200}
+                  height={200}
+                  className="w-full object-cover max-w-[150px] max-h-[150px]"
+                />
+              </Link>
             </div>
           </div>
         </div>
