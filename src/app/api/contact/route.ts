@@ -43,7 +43,11 @@ export async function POST(request: NextRequest) {
             <p><strong>Telefone:</strong> ${telefone}</p>
             ${cnpj ? `<p><strong>CNPJ:</strong> ${cnpj}</p>` : ""}
             ${empresa ? `<p><strong>Empresa:</strong> ${empresa}</p>` : ""}
-            ${funcionarios ? `<p><strong>Quantidade de Funcionários:</strong> ${funcionarios}</p>` : ""}
+            ${
+              funcionarios
+                ? `<p><strong>Quantidade de Funcionários:</strong> ${funcionarios}</p>`
+                : ""
+            }
           </div>
           <p style="margin-top: 20px; color: #666;">
             Esta mensagem foi enviada através do formulário de contato do site Virtual Machine.
@@ -65,6 +69,29 @@ export async function POST(request: NextRequest) {
     // Enviar email
     await transporter.sendMail(mailOptions);
 
+    // Enviar dados para o webhook do Make
+    try {
+      const webhookUrl =
+        "https://hook.us1.make.celonis.com/jfwx27wma78yfb8nzjqcwfmjhzvojv1v";
+      await fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nome,
+          email,
+          telefone,
+          cnpj: cnpj || null,
+          funcionarios: funcionarios || null,
+          empresa: empresa || null,
+        }),
+      });
+    } catch (webhookError) {
+      // Log do erro do webhook, mas não falha a requisição
+      console.error("Erro ao enviar para webhook:", webhookError);
+    }
+
     return NextResponse.json(
       { message: "Email enviado com sucesso!" },
       { status: 200 }
@@ -77,4 +104,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

@@ -11,7 +11,17 @@ import { z } from "zod";
 const contactFormSchema = z.object({
   nome: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
   email: z.string().email("E-mail inválido"),
-  telefone: z.string().min(14, "Telefone inválido"),
+  telefone: z
+    .string()
+    .min(1, "Telefone é obrigatório")
+    .refine(
+      (value) => {
+        // Remove caracteres não numéricos para validar
+        const numbers = value.replace(/\D/g, "");
+        return numbers.length >= 10 && numbers.length <= 11;
+      },
+      { message: "Telefone inválido" }
+    ),
   cnpj: z.string().optional(),
   funcionarios: z.string().optional(),
   empresa: z.string().optional(),
@@ -34,6 +44,8 @@ export function ContactForm() {
     reset,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
+    mode: "onBlur",
+    reValidateMode: "onBlur",
   });
 
   const onSubmit = async (data: ContactFormData) => {
@@ -56,7 +68,14 @@ export function ContactForm() {
           type: "success",
           text: "Orçamento solicitado com sucesso! Entraremos em contato em breve.",
         });
-        reset();
+        reset({
+          nome: "",
+          email: "",
+          telefone: "",
+          cnpj: "",
+          funcionarios: "",
+          empresa: "",
+        });
       } else {
         setMessage({
           type: "error",
@@ -140,7 +159,9 @@ export function ContactForm() {
                         <IMaskInput
                           mask="(00) 00000-0000"
                           value={field.value || ""}
-                          onAccept={(value) => field.onChange(value)}
+                          onAccept={(value) => {
+                            field.onChange(value);
+                          }}
                           onBlur={field.onBlur}
                           inputRef={field.ref}
                           id="telefone"
