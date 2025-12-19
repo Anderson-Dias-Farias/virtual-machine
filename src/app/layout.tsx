@@ -24,6 +24,11 @@ export const metadata: Metadata = {
     url: "https://virtualmachine.com.br",
     siteName: "Virtual Machine",
   },
+  verification: {
+    other: {
+      "facebook-domain-verification": "yzw2cp4h5mlec675q6smq14exxx8s2",
+    },
+  },
 };
 
 export default function RootLayout({

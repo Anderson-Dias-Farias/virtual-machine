@@ -1,6 +1,133 @@
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
+// Função para validar formato de email
+function isValidEmail(email: string): boolean {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+// Função para validar CNPJ (formato e dígitos verificadores)
+function isValidCNPJ(cnpj: string): boolean {
+  // Remove caracteres não numéricos
+  const cleanCNPJ = cnpj.replace(/\D/g, "");
+
+  // Verifica se tem 14 dígitos
+  if (cleanCNPJ.length !== 14) {
+    return false;
+  }
+
+  // Verifica se todos os dígitos são iguais (CNPJ inválido)
+  if (/^(\d)\1+$/.test(cleanCNPJ)) {
+    return false;
+  }
+
+  // Validação dos dígitos verificadores
+  let length = cleanCNPJ.length - 2;
+  let numbers = cleanCNPJ.substring(0, length);
+  const digits = cleanCNPJ.substring(length);
+  let sum = 0;
+  let pos = length - 7;
+
+  for (let i = length; i >= 1; i--) {
+    sum += parseInt(numbers.charAt(length - i)) * pos--;
+    if (pos < 2) pos = 9;
+  }
+
+  let result = sum % 11 < 2 ? 0 : 11 - (sum % 11);
+  if (result !== parseInt(digits.charAt(0))) {
+    return false;
+  }
+
+  length = length + 1;
+  numbers = cleanCNPJ.substring(0, length);
+  sum = 0;
+  pos = length - 7;
+
+  for (let i = length; i >= 1; i--) {
+    sum += parseInt(numbers.charAt(length - i)) * pos--;
+    if (pos < 2) pos = 9;
+  }
+
+  result = sum % 11 < 2 ? 0 : 11 - (sum % 11);
+  if (result !== parseInt(digits.charAt(1))) {
+    return false;
+  }
+
+  return true;
+}
+
+// Interface para dados do CNPJ
+interface CNPJData {
+  razao_social: string;
+  situacao: string;
+  abertura: string;
+  atividade_principal: string;
+}
+
+// Função para verificar se CNPJ está ativo na ReceitaWS
+async function isCNPJActive(cnpj: string): Promise<{
+  active: boolean;
+  data?: CNPJData;
+  error?: string;
+}> {
+  try {
+    const cleanCNPJ = cnpj.replace(/\D/g, "");
+
+    // Usando a API pública da ReceitaWS
+    const response = await fetch(
+      `https://www.receitaws.com.br/v1/cnpj/${cleanCNPJ}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      return {
+        active: false,
+        error: "Erro ao consultar CNPJ na ReceitaWS",
+      };
+    }
+
+    const data = await response.json();
+
+    // Verifica se o CNPJ está ativo
+    if (data.status === "ERROR") {
+      return {
+        active: false,
+        error: data.message || "CNPJ não encontrado",
+      };
+    }
+
+    // Verifica se a situação é "ATIVA"
+    const isActive = data.situacao === "ATIVA";
+
+    return {
+      active: isActive,
+      data: {
+        razao_social: data.nome,
+        situacao: data.situacao,
+        abertura: data.abertura,
+        atividade_principal: data.atividade_principal?.[0]?.text || "",
+      },
+      error: isActive
+        ? undefined
+        : `CNPJ não está ativo na Receita Federal. Situação atual: ${
+            data.situacao || "Não informada"
+          }`,
+    };
+  } catch (error) {
+    console.error("Erro ao verificar CNPJ:", error);
+    return {
+      active: false,
+      error: "Erro ao consultar CNPJ",
+    };
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -12,6 +139,39 @@ export async function POST(request: NextRequest) {
         { error: "Nome, email e telefone são obrigatórios" },
         { status: 400 }
       );
+    }
+
+    // Validação de email
+    if (!isValidEmail(email)) {
+      return NextResponse.json({ error: "E-mail inválido" }, { status: 400 });
+    }
+
+    // Validação de CNPJ (se fornecido)
+    let cnpjData = null;
+    if (cnpj && cnpj.trim() !== "") {
+      if (!isValidCNPJ(cnpj)) {
+        return NextResponse.json(
+          {
+            error:
+              "CNPJ inválido. Verifique o formato e os dígitos verificadores.",
+          },
+          { status: 400 }
+        );
+      }
+
+      // Verificar se CNPJ está ativo
+      const cnpjStatus = await isCNPJActive(cnpj);
+      if (!cnpjStatus.active) {
+        return NextResponse.json(
+          {
+            error: cnpjStatus.error || "CNPJ não está ativo na Receita Federal",
+          },
+          { status: 400 }
+        );
+      }
+
+      // Salvar dados do CNPJ para incluir no email e webhook
+      cnpjData = cnpjStatus.data;
     }
 
     // Configuração do transporter
@@ -42,6 +202,16 @@ export async function POST(request: NextRequest) {
             <p><strong>E-mail:</strong> ${email}</p>
             <p><strong>Telefone:</strong> ${telefone}</p>
             ${cnpj ? `<p><strong>CNPJ:</strong> ${cnpj}</p>` : ""}
+            ${
+              cnpjData
+                ? `<p><strong>Razão Social (CNPJ):</strong> ${cnpjData.razao_social}</p>`
+                : ""
+            }
+            ${
+              cnpjData
+                ? `<p><strong>Situação CNPJ:</strong> ${cnpjData.situacao}</p>`
+                : ""
+            }
             ${empresa ? `<p><strong>Empresa:</strong> ${empresa}</p>` : ""}
             ${
               funcionarios
@@ -72,7 +242,7 @@ export async function POST(request: NextRequest) {
     // Enviar dados para o webhook do Make
     try {
       const webhookUrl =
-        "https://hook.us1.make.celonis.com/jfwx27wma78yfb8nzjqcwfmjhzvojv1v";
+        "https://hook.us2.make.com/pmvx7obxafcrdibsy80a334g4f9stplw";
       await fetch(webhookUrl, {
         method: "POST",
         headers: {
@@ -83,6 +253,7 @@ export async function POST(request: NextRequest) {
           email,
           telefone,
           cnpj: cnpj || null,
+          cnpj_data: cnpjData || null,
           funcionarios: funcionarios || null,
           empresa: empresa || null,
         }),
