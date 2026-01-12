@@ -242,8 +242,8 @@ export async function POST(request: NextRequest) {
     // Enviar dados para o webhook do Make
     try {
       const webhookUrl =
-        "https://hook.us2.make.com/pmvx7obxafcrdibsy80a334g4f9stplw";
-      await fetch(webhookUrl, {
+        "https://hook.us2.make.com/eegb1qdkddd1afyw84fj37rpdn72r24i";
+      const webhookResponse = await fetch(webhookUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -258,6 +258,29 @@ export async function POST(request: NextRequest) {
           empresa: empresa || null,
         }),
       });
+
+      // Verificar se a resposta foi bem-sucedida
+      if (!webhookResponse.ok) {
+        const responseText = await webhookResponse.text();
+        console.error(
+          `Erro ao enviar para webhook: Status ${webhookResponse.status} ${webhookResponse.statusText}`,
+          {
+            url: webhookUrl,
+            status: webhookResponse.status,
+            statusText: webhookResponse.statusText,
+            response: responseText,
+          }
+        );
+
+        // 410 Gone significa que o webhook não existe mais
+        if (webhookResponse.status === 410) {
+          console.error(
+            "⚠️ ATENÇÃO: O webhook foi removido ou não existe mais (410 Gone). Verifique a URL do webhook no Make."
+          );
+        }
+      } else {
+        console.log("✅ Webhook enviado com sucesso");
+      }
     } catch (webhookError) {
       // Log do erro do webhook, mas não falha a requisição
       console.error("Erro ao enviar para webhook:", webhookError);
