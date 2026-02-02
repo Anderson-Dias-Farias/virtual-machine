@@ -22,8 +22,26 @@ const contactFormSchema = z.object({
       },
       { message: "Telefone inválido" }
     ),
-  cnpj: z.string().optional(),
-  funcionarios: z.string().optional(),
+  cnpj: z
+    .string()
+    .min(1, "CNPJ é obrigatório")
+    .refine(
+      (value) => {
+        const cleanCNPJ = value.replace(/\D/g, "");
+        return cleanCNPJ.length === 14;
+      },
+      { message: "CNPJ deve ter 14 dígitos" }
+    ),
+  funcionarios: z
+    .string()
+    .min(1, "Quantidade de funcionários é obrigatório")
+    .refine(
+      (value) => {
+        const num = parseInt(value.replace(/\D/g, ""), 10);
+        return !isNaN(num) && num >= 5;
+      },
+      { message: "A quantidade mínima de funcionários é 5" }
+    ),
   empresa: z.string().optional(),
 });
 
@@ -212,6 +230,11 @@ export function ContactForm() {
                       {...register("funcionarios")}
                       className="bg-[var(--cinza)] border-[var(--cinza)] rounded-[4px] h-[40px] md:h-[50px] px-[10px] text-[14px] font-normal text-[var(--preto)]"
                     />
+                    {errors.funcionarios && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.funcionarios.message}
+                      </p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <Input
